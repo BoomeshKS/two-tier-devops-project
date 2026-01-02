@@ -1,53 +1,162 @@
 # Two-Tier Flask Application with CI/CD
 
-This project demonstrates a two-tier web application consisting of:
-- A Flask backend service
-- A MySQL database
-
-The application is containerized using Docker and deployed automatically using Jenkins.
+This project demonstrates a **two-tier web application** built using **Flask** and **MySQL**, fully containerized with **Docker**, orchestrated using **Docker Compose**, and deployed automatically using **Jenkins CI/CD**.
 
 ---
 
-## Architecture Overview
+## Project Overview
 
-- Flask application runs in one container
-- MySQL database runs in a separate container
-- Docker Compose manages service communication
-- Jenkins automates build and deployment
+The application consists of:
+- A **Flask backend service** (Application Tier)
+- A **MySQL database** (Database Tier)
+
+The goal of this project is to show how a simple backend system can be:
+- Containerized
+- Automated
+- Deployed consistently using CI/CD practices
+
+---
+
+## Architecture Diagram
+
+### High-Level Architecture
+
+```
+
++-------------+
+|   Browser   |
++------+------+
+|
+v
++------+-------------------+
+|   Flask Application      |
+|   (Docker Container)     |
++------+-------------------+
+|
+v
++------+-------------------+
+|   MySQL Database         |
+|   (Docker Container)     |
++--------------------------+
+
+```
+
+---
+
+## CI/CD Flow Diagram
+
+```
+
+Developer
+|
+v
+GitHub Repository
+|
+v
+Jenkins Pipeline
+|
+v
+Docker Build
+|
+v
+Docker Compose
+|
+v
+Flask App  <---->  MySQL DB
+
+```
 
 ---
 
 ## Project Structure
 
+```
+
 two-tier-project/
+│
 ├── app/
-│ ├── app.py
-│ ├── requirements.txt
-│ └── Dockerfile
+│   ├── app.py              # Flask application logic
+│   ├── requirements.txt    # Python dependencies
+│   └── Dockerfile          # Flask Docker image
+│
 ├── db/
-│ └── init.sql
-├── docker-compose.yml
-├── Jenkinsfile
-└── README.md
+│   └── init.sql            # Database initialization script
+│
+├── docker-compose.yml      # Multi-container orchestration
+├── Jenkinsfile             # CI/CD pipeline definition
+└── README.md               # Project documentation
+
+````
 
 ---
 
 ## How the Application Works
 
-1. Flask starts and waits for incoming requests
-2. MySQL starts and initializes the database
-3. Flask connects to MySQL using environment variables
-4. Flask executes a SQL query
-5. MySQL returns the result
-6. Flask returns the response to the browser
+1. The **Flask container** starts and listens on port `5000`
+2. The **MySQL container** initializes the database using `init.sql`
+3. Flask reads database credentials using **environment variables**
+4. Flask connects to MySQL through Docker’s internal network
+5. A SQL query is executed
+6. The response is returned to the browser
 
 ---
 
-## How to Run Locally
+## Docker & Docker Compose
+
+### Why Docker?
+- Ensures consistent behavior across environments
+- Removes dependency installation issues
+- Isolates application and database
+
+### Why Docker Compose?
+- Runs multiple containers together
+- Automatically creates a shared network
+- Simplifies service communication using service names
+
+---
+
+## 🚀 How to Run the Project Locally
+
+From the project root:
 
 ```bash
 docker-compose up --build
+````
 
-Access the app at:
+Access the application in your browser:
 
+```
 http://localhost:5000
+```
+
+To stop the application:
+
+```bash
+docker-compose down
+```
+
+---
+
+## Jenkins CI/CD Pipeline
+
+The Jenkins pipeline performs the following steps:
+
+1. Clones the repository from GitHub
+2. Builds Docker images
+3. Runs containers using Docker Compose
+4. Deploys the application automatically
+
+This removes manual deployment steps and ensures consistency.
+
+---
+
+## Key Concepts Demonstrated
+
+* Two-tier application architecture
+* Containerization with Docker
+* Multi-container orchestration
+* Environment-based configuration
+* CI/CD automation with Jenkins
+* Basic debugging and logging
+
+
